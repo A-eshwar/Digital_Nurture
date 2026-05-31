@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration - Local Community Event Portal</title>
+    <link rel="stylesheet" href="bootstrap-files/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { padding-bottom: 70px; }
+        .confirmation-section { display: none; }
+        .confirmation-section.show { display: block; animation: slideIn 0.3s ease; }
+        #geoResult { display: none; }
+        #videoStatus { display: none; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color:#0b2545;">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase" href="index.html">
+                <i class="bi bi-people-fill me-2"></i>Community Portal
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-fill me-1"></i>Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html"><i class="bi bi-calendar-event me-1"></i>Events</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="registration.html"><i class="bi bi-pencil-square me-1"></i>Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="feedback.html"><i class="bi bi-chat-dots me-1"></i>Feedback</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html"><i class="bi bi-envelope me-1"></i>Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="help.html" target="_blank"><i class="bi bi-question-circle me-1"></i>Help</a></li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <div class="input-group">
+                        <input class="form-control form-control-sm" type="search" placeholder="Search events..." aria-label="Search">
+                        <button class="btn btn-outline-light btn-sm" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <main class="container py-4">
+        <div class="row">
+            <div class="col-12 col-lg-8 mx-auto">
+                <div class="bg-primary bg-gradient text-white rounded-3 p-4 mb-4 shadow">
+                    <h1 class="fw-bold display-6"><i class="bi bi-pencil-square me-2"></i>Event Registration</h1>
+                    <p class="lead mb-0">Fill out the form below to register for your preferred event</p>
+                </div>
+                <div class="card shadow rounded-3 border-0 mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-capitalize mb-3"><i class="bi bi-play-circle me-2 text-primary"></i>Event Promo</h5>
+                        <video id="promoVideo" controls class="w-100 rounded-3 border" oncanplay="document.getElementById('videoStatus').style.display='block'">
+                            <source src="festival.jpg" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div id="videoStatus" class="mt-2 p-2 bg-success bg-opacity-10 border border-success rounded text-success fw-semibold small">
+                            <i class="bi bi-check-circle me-1"></i>Video ready to play!
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4">
+                        <form id="registrationForm" name="eventRegistration">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 order-sm-1">
+                                    <div class="mb-3">
+                                        <label for="fullName" class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Enter your full name" autofocus required>
+                                        </div>
+                                        <div class="form-text">Your legal name as it appears on identification</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 order-sm-2">
+                                    <div class="mb-3">
+                                        <label for="userEmail" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                            <input type="email" id="userEmail" name="userEmail" class="form-control" placeholder="your.email@example.com" required>
+                                        </div>
+                                        <div class="form-text">We'll send confirmation details to this email</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="eventDate" class="form-label fw-semibold">Event Date <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                                            <input type="date" id="eventDate" name="eventDate" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="eventType" class="form-label fw-semibold">Event Type <span class="text-danger">*</span></label>
+                                        <select id="eventType" name="eventType" class="form-select" required>
+                                            <option value="">-- Select an Event --</option>
+                                            <option value="Theater Night">Community Theater Night</option>
+                                            <option value="Cleanup Drive">Environmental Cleanup Drive</option>
+                                            <option value="Potluck Festival">Community Potluck Festival</option>
+                                            <option value="Book Club">Local Authors Book Club</option>
+                                            <option value="Fun Run">5K Community Fun Run</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Interests <span class="text-muted fw-normal">(select all that apply)</span></label>
+                                        <div class="d-flex flex-wrap gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="chkArts" name="interests" value="arts">
+                                                <label class="form-check-label" for="chkArts"><i class="bi bi-palette me-1"></i>Arts &amp; Culture</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="chkSports" name="interests" value="sports">
+                                                <label class="form-check-label" for="chkSports"><i class="bi bi-trophy me-1"></i>Sports &amp; Fitness</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="chkVolunteer" name="interests" value="volunteer">
+                                                <label class="form-check-label" for="chkVolunteer"><i class="bi bi-hand-thumbs-up me-1"></i>Volunteering</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="chkFood" name="interests" value="food">
+                                                <label class="form-check-label" for="chkFood"><i class="bi bi-cup-hot me-1"></i>Food &amp; Community</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="userMessage" class="form-label fw-semibold">Additional Message <span class="text-muted fw-normal">(Optional)</span></label>
+                                        <textarea id="userMessage" name="userMessage" class="form-control" placeholder="Share any additional information..." maxlength="500" rows="4"></textarea>
+                                        <div class="form-text" id="charCount">0/500 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex flex-column gap-2">
+                                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check-circle me-2"></i>Register for Event</button>
+                                    <button type="button" class="btn btn-outline-danger w-100" id="clearPrefsBtn"><i class="bi bi-trash me-2"></i>Clear Preferences</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="confirmationSection" class="confirmation-section mt-4 p-3 bg-success bg-opacity-10 border border-success rounded-3">
+                            <h5 class="text-success fw-bold"><i class="bi bi-check-circle-fill me-2"></i>Registration Confirmation</h5>
+                            <output id="confirmationOutput" form="registrationForm" class="d-block mt-2 p-3 bg-white rounded border">
+                                Your registration details will appear here
+                            </output>
+                            <p class="text-muted small mt-2 mb-0"><i class="bi bi-envelope me-1"></i>A confirmation email has been sent to your address.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-dark bg-gradient text-white rounded-3 shadow text-center">
+                    <h5 class="fw-bold"><i class="bi bi-geo-alt-fill me-2"></i>Find Nearby Events</h5>
+                    <p class="text-white-50 small mb-3">Allow location access to find events near you</p>
+                    <button class="btn btn-outline-light rounded-pill px-4" id="geoBtn"><i class="bi bi-pin-map me-2"></i>Find Nearby Events</button>
+                    <div id="geoResult" class="mt-3 p-2 rounded text-start small"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="position-fixed bottom-0 w-100 py-2 px-4 d-flex flex-column flex-md-row justify-content-between align-items-center" style="background-color:#0b2545; z-index:1000;">
+        <span class="text-white small">&copy; 2026 Local Community Event Portal. All rights reserved.</span>
+        <div class="d-flex gap-3 mt-1 mt-md-0">
+            <a href="#" class="text-white" aria-label="Facebook"><i class="bi bi-facebook fs-5"></i></a>
+            <a href="#" class="text-white" aria-label="Twitter"><i class="bi bi-twitter-x fs-5"></i></a>
+            <a href="#" class="text-white" aria-label="Instagram"><i class="bi bi-instagram fs-5"></i></a>
+            <a href="#" class="text-white" aria-label="YouTube"><i class="bi bi-youtube fs-5"></i></a>
+            <a href="help.html" target="_blank" class="text-white" aria-label="Help"><i class="bi bi-question-circle fs-5"></i></a>
+        </div>
+    </footer>
+    <script src="bootstrap-files/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const messageField = document.getElementById('userMessage');
+        const charCountDisplay = document.getElementById('charCount');
+        const eventTypeSelect = document.getElementById('eventType');
+        const savedEventType = localStorage.getItem('preferredEventType');
+        if (savedEventType) eventTypeSelect.value = savedEventType;
+        eventTypeSelect.addEventListener('change', function () {
+            localStorage.setItem('preferredEventType', this.value);
+            sessionStorage.setItem('sessionEventType', this.value);
+        });
+        document.getElementById('clearPrefsBtn').addEventListener('click', function () {
+            localStorage.clear(); sessionStorage.clear(); eventTypeSelect.value = '';
+            alert('Preferences cleared.');
+        });
+        messageField.addEventListener('input', function () {
+            const len = this.value.length;
+            charCountDisplay.textContent = len + '/500 characters';
+            charCountDisplay.style.color = len > 400 ? '#e53e3e' : len > 250 ? '#ed8936' : '#667eea';
+        });
+        const registrationForm = document.getElementById('registrationForm');
+        const confirmationSection = document.getElementById('confirmationSection');
+        const confirmationOutput = document.getElementById('confirmationOutput');
+        let formDirty = false;
+        registrationForm.addEventListener('input', function() { formDirty = true; });
+        window.addEventListener('beforeunload', function(e) {
+            if (formDirty) { e.preventDefault(); e.returnValue = ''; }
+        });
+        registrationForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const fullName = document.getElementById('fullName').value;
+            const userEmail = document.getElementById('userEmail').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const eventType = document.getElementById('eventType').value;
+            const userMessage = document.getElementById('userMessage').value;
+            const formattedDate = new Date(eventDate).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+            confirmationOutput.innerHTML = '<strong>Thank you for registering!</strong><br><br>'
+                + '<strong>Name:</strong> ' + fullName + '<br>'
+                + '<strong>Email:</strong> ' + userEmail + '<br>'
+                + '<strong>Event:</strong> ' + eventType + '<br>'
+                + '<strong>Date:</strong> ' + formattedDate
+                + (userMessage ? '<br><strong>Message:</strong> "' + userMessage + '"' : '');
+            confirmationSection.classList.add('show');
+            confirmationSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            formDirty = false;
+            setTimeout(function() {
+                registrationForm.reset();
+                charCountDisplay.textContent = '0/500 characters';
+                charCountDisplay.style.color = '#667eea';
+                messageField.focus();
+            }, 2000);
+        });
+        document.getElementById('geoBtn').addEventListener('click', function () {
+            const geoResult = document.getElementById('geoResult');
+            geoResult.className = 'mt-3 p-2 rounded text-start small';
+            geoResult.style.display = 'block';
+            geoResult.textContent = 'Locating you...';
+            if (!navigator.geolocation) {
+                geoResult.classList.add('bg-danger', 'bg-opacity-25', 'text-danger');
+                geoResult.textContent = 'Geolocation is not supported by your browser.';
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                function (pos) {
+                    geoResult.classList.add('bg-success', 'bg-opacity-25', 'text-success');
+                    geoResult.innerHTML = 'Location found!<br>Lat: ' + pos.coords.latitude.toFixed(5) + '<br>Lon: ' + pos.coords.longitude.toFixed(5) + '<br>Accuracy: +/-' + Math.round(pos.coords.accuracy) + 'm';
+                },
+                function (err) {
+                    geoResult.classList.add('bg-danger', 'bg-opacity-25', 'text-danger');
+                    var msgs = { 1:'Permission denied.', 2:'Location unavailable.', 3:'Request timed out.' };
+                    geoResult.textContent = msgs[err.code] || 'Unknown error.';
+                },
+                { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+            );
+        });
+    </script>
+</body>
+</html>

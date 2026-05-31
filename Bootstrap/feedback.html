@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Feedback - Local Community Event Portal</title>
+    <link rel="stylesheet" href="bootstrap-files/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { padding-bottom: 70px; }
+        .fee-display { display: none; }
+        .fee-display.show { display: block; animation: slideIn 0.3s ease; }
+        .confirmation-message { display: none; }
+        .confirmation-message.show { display: block; animation: slideIn 0.3s ease; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .event-image { height: 180px; object-fit: cover; cursor: pointer; transition: transform 0.2s ease; }
+        .event-image:hover { transform: scale(1.03); }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color:#0b2545;">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase" href="index.html">
+                <i class="bi bi-people-fill me-2"></i>Community Portal
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-fill me-1"></i>Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html"><i class="bi bi-calendar-event me-1"></i>Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registration.html"><i class="bi bi-pencil-square me-1"></i>Register</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="feedback.html"><i class="bi bi-chat-dots me-1"></i>Feedback</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html"><i class="bi bi-envelope me-1"></i>Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="help.html" target="_blank"><i class="bi bi-question-circle me-1"></i>Help</a></li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <div class="input-group">
+                        <input class="form-control form-control-sm" type="search" placeholder="Search events..." aria-label="Search">
+                        <button class="btn btn-outline-light btn-sm" type="submit"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <main class="container py-4">
+        <div class="bg-warning bg-gradient text-dark rounded-3 p-4 mb-4 shadow">
+            <h1 class="fw-bold display-6"><i class="bi bi-chat-square-dots me-2"></i>Event Feedback</h1>
+            <p class="lead mb-0">Share your experience and help us improve future events</p>
+        </div>
+
+        <ul class="nav nav-tabs mb-4" id="feedbackTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="form-tab" data-bs-toggle="tab" data-bs-target="#formPane" type="button" role="tab">
+                    <i class="bi bi-pencil me-1"></i>Submit Feedback
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="gallery-tab" data-bs-toggle="tab" data-bs-target="#galleryPane" type="button" role="tab">
+                    <i class="bi bi-images me-1"></i>Event Gallery
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="feedbackTabContent">
+            <div class="tab-pane fade show active" id="formPane" role="tabpanel">
+                <div class="card shadow rounded-3 border-0">
+                    <div class="card-body p-4">
+                        <form id="feedbackForm" name="eventFeedback">
+                            <div class="row">
+                                <div class="col-12 col-md-6 order-md-1">
+                                    <div class="mb-3">
+                                        <label for="phoneNumber" class="form-label fw-semibold">Phone Number</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                            <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="(555) 123-4567" pattern="[0-9\-\(\)\s]+" maxlength="20">
+                                        </div>
+                                        <div id="phoneValidation" class="form-text"></div>
+                                        <div class="form-text">Format: (123) 456-7890 or 123-456-7890</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 order-md-2">
+                                    <div class="mb-3">
+                                        <label for="eventFeedback" class="form-label fw-semibold">Which Event Did You Attend?</label>
+                                        <select id="eventFeedback" name="eventFeedback" class="form-select">
+                                            <option value="">-- Select Event --</option>
+                                            <option value="Theater">Community Theater Night</option>
+                                            <option value="Cleanup">Environmental Cleanup Drive</option>
+                                            <option value="Potluck">Community Potluck Festival</option>
+                                            <option value="BookClub">Local Authors Book Club</option>
+                                            <option value="FunRun">5K Community Fun Run</option>
+                                        </select>
+                                        <div id="feeDisplay" class="fee-display mt-2 p-2 bg-primary bg-opacity-10 border border-primary rounded small"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="feedbackEmail" class="form-label fw-semibold">Email Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                            <input type="email" id="feedbackEmail" name="feedbackEmail" class="form-control" placeholder="your.email@example.com">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="eventRating" class="form-label fw-semibold">Event Rating (1-5)</label>
+                                        <select id="eventRating" name="eventRating" class="form-select">
+                                            <option value="">-- Select Rating --</option>
+                                            <option value="5">&#11088;&#11088;&#11088;&#11088;&#11088; Excellent (5)</option>
+                                            <option value="4">&#11088;&#11088;&#11088;&#11088; Very Good (4)</option>
+                                            <option value="3">&#11088;&#11088;&#11088; Good (3)</option>
+                                            <option value="2">&#11088;&#11088; Fair (2)</option>
+                                            <option value="1">&#11088; Poor (1)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="feedbackMessage" class="form-label fw-semibold">Your Feedback</label>
+                                        <textarea id="feedbackMessage" name="feedbackMessage" class="form-control" placeholder="Tell us about your experience..." maxlength="800" rows="4"></textarea>
+                                        <div class="form-text"><span id="charCount">0/800</span> characters | <span id="wordCount">0</span> words</div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-primary flex-fill"><i class="bi bi-send me-2"></i>Submit Feedback</button>
+                                        <button type="reset" class="btn btn-outline-secondary flex-fill"><i class="bi bi-x-circle me-2"></i>Clear Form</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="confirmationMessage" class="confirmation-message mt-3 p-3 bg-success bg-opacity-10 border border-success rounded-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i><strong>Thank you!</strong> Your feedback has been submitted successfully.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="galleryPane" role="tabpanel">
+                <div class="p-3 bg-light rounded-3 border mb-3 text-center">
+                    <p class="text-muted mb-0 small"><i class="bi bi-hand-index me-1"></i>Click an image to enlarge it</p>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-12 col-sm-4 mb-3 text-center">
+                        <div class="position-relative d-inline-block">
+                            <img src="festival.jpg" alt="Event Photo 1" class="event-image img-fluid rounded-3 border border-3 border-primary shadow" data-bs-toggle="modal" data-bs-target="#imageModal" data-src="festival.jpg" data-alt="Festival">
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-1 rounded-pill">Festival</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4 mb-3 text-center">
+                        <div class="position-relative d-inline-block">
+                            <img src="fun run.jpg" alt="Event Photo 2" class="event-image img-fluid rounded-3 border border-3 border-success shadow" data-bs-toggle="modal" data-bs-target="#imageModal" data-src="fun run.jpg" data-alt="Fun Run">
+                            <span class="badge bg-success position-absolute top-0 end-0 m-1 rounded-pill">Fun Run</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4 mb-3 text-center">
+                        <div class="position-relative d-inline-block">
+                            <img src="Theatre.jpg" alt="Event Photo 3" class="event-image img-fluid rounded-3 border border-3 border-warning shadow" data-bs-toggle="modal" data-bs-target="#imageModal" data-src="Theatre.jpg" data-alt="Theater Night">
+                            <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-1 rounded-pill">Theater</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="position-fixed bottom-0 w-100 py-2 px-4 d-flex flex-column flex-md-row justify-content-between align-items-center" style="background-color:#0b2545; z-index:1000;">
+        <span class="text-white small">&copy; 2026 Local Community Event Portal. All rights reserved.</span>
+        <div class="d-flex gap-3 mt-1 mt-md-0">
+            <a href="#" class="text-white" aria-label="Facebook"><i class="bi bi-facebook fs-5"></i></a>
+            <a href="#" class="text-white" aria-label="Twitter"><i class="bi bi-twitter-x fs-5"></i></a>
+            <a href="#" class="text-white" aria-label="Instagram"><i class="bi bi-instagram fs-5"></i></a>
+            <a href="#" class="text-white" aria-label="YouTube"><i class="bi bi-youtube fs-5"></i></a>
+            <a href="help.html" target="_blank" class="text-white" aria-label="Help"><i class="bi bi-question-circle fs-5"></i></a>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-3 shadow-lg">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="imageModalTitle">Event Photo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-2">
+                    <img id="enlargedImage" src="" alt="" class="img-fluid rounded-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="bootstrap-files/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const eventFees = { 'Theater':'Free', 'Cleanup':'Free', 'Potluck':'$5 suggested donation', 'BookClub':'Free', 'FunRun':'$15 registration fee' };
+        const phoneInput = document.getElementById('phoneNumber');
+        const phoneValidation = document.getElementById('phoneValidation');
+        phoneInput.addEventListener('blur', function() {
+            const v = this.value.trim();
+            if (!v) { phoneValidation.textContent = ''; return; }
+            if (/^[\d\-\(\)\s]{10,}$/.test(v)) {
+                phoneValidation.innerHTML = '<span class="text-success"><i class="bi bi-check-circle me-1"></i>Valid phone number</span>';
+            } else {
+                phoneValidation.innerHTML = '<span class="text-danger"><i class="bi bi-x-circle me-1"></i>Invalid phone number format</span>';
+            }
+        });
+        document.getElementById('eventFeedback').addEventListener('change', function() {
+            const feeDisplay = document.getElementById('feeDisplay');
+            if (this.value) {
+                feeDisplay.innerHTML = '<i class="bi bi-tag me-1"></i><strong>Event Fee:</strong> ' + (eventFees[this.value] || 'N/A');
+                feeDisplay.classList.add('show');
+            } else {
+                feeDisplay.classList.remove('show');
+            }
+        });
+        const feedbackTextarea = document.getElementById('feedbackMessage');
+        const charCountDisplay = document.getElementById('charCount');
+        const wordCountDisplay = document.getElementById('wordCount');
+        feedbackTextarea.addEventListener('input', function() {
+            const text = this.value;
+            charCountDisplay.textContent = text.length + '/800';
+            wordCountDisplay.textContent = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+        });
+        feedbackTextarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) document.getElementById('feedbackForm').dispatchEvent(new Event('submit'));
+        });
+        const imageModalEl = document.getElementById('imageModal');
+        imageModalEl.addEventListener('show.bs.modal', function(e) {
+            const trigger = e.relatedTarget;
+            document.getElementById('enlargedImage').src = trigger.getAttribute('data-src');
+            document.getElementById('enlargedImage').alt = trigger.getAttribute('data-alt');
+            document.getElementById('imageModalTitle').textContent = trigger.getAttribute('data-alt');
+        });
+        const feedbackForm = document.getElementById('feedbackForm');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            confirmationMessage.classList.add('show');
+            confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            setTimeout(function() {
+                feedbackForm.reset();
+                charCountDisplay.textContent = '0/800';
+                wordCountDisplay.textContent = '0';
+                phoneValidation.textContent = '';
+                document.getElementById('feeDisplay').classList.remove('show');
+                confirmationMessage.classList.remove('show');
+                feedbackTextarea.focus();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
